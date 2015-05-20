@@ -45,37 +45,37 @@ public class DatabaseStorageTest {
 
 	@Test
 	public void searchAdherant_SAME() {
-		assertThat(dataStorage.searchAdherant(new String[]{NAME, FIRST_NAME, BIRTH_DATE}).or(new AdherantScore(new Adherant(), 0)).adherant, equalTo(adherant));
+		assertThat(dataStorage.searchAdherant(new String[]{NAME, FIRST_NAME, BIRTH_DATE}).adherant, equalTo(adherant));
 	}
 
 	@Test
 	public void searchAdherant_LOWERCASE() {
-		assertThat(dataStorage.searchAdherant(new String[]{"broca", FIRST_NAME, BIRTH_DATE}).or(new AdherantScore(new Adherant(), 0)).adherant, equalTo(adherant));
+		assertThat(dataStorage.searchAdherant(new String[]{"broca", FIRST_NAME, BIRTH_DATE}).adherant, equalTo(adherant));
 	}
 
 	@Test
 	public void searchAdherant_VARIOUS_CASES() {
-		assertThat(dataStorage.searchAdherant(new String[]{"BrocA", FIRST_NAME, BIRTH_DATE}).or(new AdherantScore(new Adherant(), 0)).adherant, equalTo(adherant));
+		assertThat(dataStorage.searchAdherant(new String[]{"BrocA", FIRST_NAME, BIRTH_DATE}).adherant, equalTo(adherant));
 	}
 
 	@Test
 	public void searchAdherant_END_S() {
-		assertThat(dataStorage.searchAdherant(new String[]{"Brocas", FIRST_NAME, BIRTH_DATE}).or(new AdherantScore(new Adherant(), 0)).adherant, equalTo(adherant));
+		assertThat(dataStorage.searchAdherant(new String[]{"Brocas", FIRST_NAME, BIRTH_DATE}).adherant, equalTo(adherant));
 	}
 
 	@Test
 	public void searchAdherant_MAIDEN_WITHOUT_SIGN() {
-		assertThat(dataStorage.searchAdherant(new String[]{"Grangecabane", FIRST_NAME, BIRTH_DATE}).or(new AdherantScore(new Adherant(), 0)).adherant, equalTo(adherant));
+		assertThat(dataStorage.searchAdherant(new String[]{"Grangecabane", FIRST_NAME, BIRTH_DATE}).adherant, equalTo(adherant));
 	}
 
 	@Test
 	public void searchAdherant_MAIDEN_SAME() {
-		assertThat(dataStorage.searchAdherant(new String[]{MAIDEN_NAME, FIRST_NAME, BIRTH_DATE}).or(new AdherantScore(new Adherant(), 0)).adherant, equalTo(adherant));
+		assertThat(dataStorage.searchAdherant(new String[]{MAIDEN_NAME, FIRST_NAME, BIRTH_DATE}).adherant, equalTo(adherant));
 	}
 
 	@Test
 	public void searchAdherant_MAIDEN_SPACE() {
-		assertThat(dataStorage.searchAdherant(new String[]{"Grange Cabane", FIRST_NAME, BIRTH_DATE}).or(new AdherantScore(new Adherant(), 0)).adherant, equalTo(adherant));
+		assertThat(dataStorage.searchAdherant(new String[]{"Grange Cabane", FIRST_NAME, BIRTH_DATE}).adherant, equalTo(adherant));
 	}
 
 	@Test
@@ -90,7 +90,7 @@ public class DatabaseStorageTest {
 
 	@Test
 	public void searchAdherant_BIRTH_DATE_ABSENT() {
-		assertThat(dataStorage.searchAdherant(new String[]{NAME, FIRST_NAME, ""}).or(new AdherantScore(new Adherant(), 0)).adherant, equalTo(adherant));
+		assertThat(dataStorage.searchAdherant(new String[]{NAME, FIRST_NAME, ""}).adherant, equalTo(adherant));
 	}
 
 	@Test
@@ -104,7 +104,7 @@ public class DatabaseStorageTest {
 
 		dataStorageWithNull.populate(adherantsList);
 		
-		assertThat(dataStorageWithNull.searchAdherant(new String[]{NAME, FIRST_NAME, ""}).or(new AdherantScore(new Adherant(), 0)).adherant, equalTo(adherantWithNull));
+		assertThat(dataStorageWithNull.searchAdherant(new String[]{NAME, FIRST_NAME, ""}).adherant, equalTo(adherantWithNull));
 	}
 	
 	@Test
@@ -118,7 +118,7 @@ public class DatabaseStorageTest {
 
 		dataStorageWithNull.populate(adherantsList);
 		
-		assertThat(dataStorageWithNull.searchAdherant(new String[]{NAME, FIRST_NAME, ""}).or(new AdherantScore(new Adherant(), 0)).adherant, equalTo(adherantWithNull));
+		assertThat(dataStorageWithNull.searchAdherant(new String[]{NAME, FIRST_NAME, ""}).adherant, equalTo(adherantWithNull));
 	}
 	
 	@Test
@@ -132,7 +132,7 @@ public class DatabaseStorageTest {
 
 		dataStorageWithNull.populate(adherantsList);
 		
-		assertThat(dataStorageWithNull.searchAdherant(new String[]{NAME, FIRST_NAME, ""}).or(new AdherantScore(new Adherant(), 0)).adherant, equalTo(adherantWithNull));
+		assertThat(dataStorageWithNull.searchAdherant(new String[]{NAME, FIRST_NAME, ""}).adherant, equalTo(adherantWithNull));
 	}
 	
 	@Test
@@ -146,6 +146,6 @@ public class DatabaseStorageTest {
 
 		dataStorageWithNull.populate(adherantsList);
 		
-		assertThat(dataStorageWithNull.searchAdherant(new String[]{NAME, FIRST_NAME, ""}).or(new AdherantScore(new Adherant(), 0)).adherant, equalTo(adherantWithNull));
+		assertThat(dataStorageWithNull.searchAdherant(new String[]{NAME, FIRST_NAME, ""}).adherant, equalTo(adherantWithNull));
 	}
 }

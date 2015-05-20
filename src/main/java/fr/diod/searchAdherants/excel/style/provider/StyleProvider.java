@@ -18,4 +18,11 @@ public interface StyleProvider {
 	 */
 	CellStyle get(int score);
 
+	/**
+	 * Should you add a Comment according to the score
+	 * @param score
+	 * @return true if a comment should be added
+	 */
+	boolean needsComment(int score);
+
 }

@@ -20,4 +20,9 @@ public class DefaultStyleProvider implements StyleProvider {
 		return score == 100 ? styleFound : styleNearlyFound;
 	}
 
+	@Override
+	public boolean needsComment(int score) {
+		return score >= 30;
+	}
+
 }

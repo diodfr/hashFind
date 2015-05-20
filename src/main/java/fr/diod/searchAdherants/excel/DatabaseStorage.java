@@ -14,8 +14,6 @@ import org.apache.commons.collections.map.MultiValueMap;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.google.common.base.Optional;
-
 import fr.diod.searchAdherants.hashFind.HashName;
 
 /**
@@ -46,7 +44,7 @@ public class DatabaseStorage {
 	public void populate(String fileName, int sheetNumber) {
 		populate(fileName, sheetNumber, "NOM", "Nom Jeune Fille", "Prenom", "Date Naissance", "Portable", "Téléphone", "Email");
 	}
-	
+
 	/**
 	 * Rempli la base à partir d'un {@link File} et d'un numéro de feuille.
 	 * "NOM", "Nom Jeune Fille", "Prenom", "Date Naissance" sont utilisés pour les noms de colonne.
@@ -56,7 +54,7 @@ public class DatabaseStorage {
 	public void populate(File file, int sheetNumber) {
 		populate(file, sheetNumber, "NOM", "Nom Jeune Fille", "Prenom", "Date Naissance", "Portable", "Téléphone", "Email");
 	}
-	
+
 	/**
 	 * Rempli la base des Adhérants à partir d'un {@link File}.
 	 * @param file
@@ -73,7 +71,7 @@ public class DatabaseStorage {
 		List<Adherant> adherantsList = ExcelTool.populate(file, sheetNumber, name, maidenName, firstName, birthDate, portable, telephone, email);
 		populate(adherantsList);
 	}
-	
+
 	/**
 	 * Rempli la base des Adhérants à partir d'un fichier.
 	 * @param file
@@ -148,7 +146,7 @@ public class DatabaseStorage {
 	 * @param values liste des valeurs concernant cet adhérant
 	 * @return Adhérant et score max
 	 */
-	public Optional<AdherantScore> searchAdherant(String values[]) {
+	public AdherantScore searchAdherant(String values[]) {
 		int maxScore = 0;
 		Adherant currentMax = null;
 
@@ -157,7 +155,7 @@ public class DatabaseStorage {
 
 			@SuppressWarnings("unchecked")
 			Collection<Adherant> coll = (Collection<Adherant>) nameMap.get(HashName.cleanName(value)); // y a t'il un nom ?
-			
+
 			if (coll != null) {
 				for (Adherant currentAdherant : coll) {
 					if (currentAdherant != null) {
@@ -171,17 +169,17 @@ public class DatabaseStorage {
 						}
 
 						LOGGER.debug("First Name : {} %", currentScore);
-						
+
 						if (currentAdherant.birth.isEmpty()) {
 							currentScore += Math.min(20, currentScore * 0.5);
 						} else if (search(HashName.cleanName(currentAdherant.birth), values)) {
 							currentScore += 20;
 						}
-						
+
 						LOGGER.debug("Birth : {} %", currentScore);
 
 						if (currentScore == 100) {
-							return Optional.of(new AdherantScore(currentAdherant, currentScore)); // perfect match
+							return new AdherantScore(currentAdherant, currentScore); // perfect match
 						} else if (maxScore < currentScore) {
 							LOGGER.debug("CURRENT MAX {}", currentScore);
 							currentMax = currentAdherant;
@@ -192,10 +190,7 @@ public class DatabaseStorage {
 			}
 		}
 
-		if (maxScore > 30) {
-			return Optional.of(new AdherantScore(currentMax, maxScore));
-		}
-		return Optional.absent();
+		return new AdherantScore(currentMax, maxScore);
 	}
 
 	private boolean search(String value, String[] values) {

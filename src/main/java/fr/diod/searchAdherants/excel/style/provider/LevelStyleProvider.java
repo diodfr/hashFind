@@ -15,6 +15,7 @@ public class LevelStyleProvider implements StyleProvider {
 	private NavigableMap<Integer, Short> colors = new TreeMap<Integer, Short>();
 	private Map<Integer, CellStyle> mapCellStyle = new HashMap<Integer, CellStyle>();
 	private Workbook wb;
+	private int minScoreForComments;
 	
 	
 	public void initStyle(Workbook wb) {
@@ -41,4 +42,16 @@ public class LevelStyleProvider implements StyleProvider {
 		return ExcelSearch.createCellStyle(wb, colorIndex);
 	}
 
+	@Override
+	public boolean needsComment(int score) {
+		return minScoreForComments <= score;
+	}
+	
+	/**
+	 * Sets the minimum score needed to display comments
+	 * @param minScoreForComments score between 0 to 100
+	 */
+	public void setMinScoreForComments(int minScoreForComments) {
+		this.minScoreForComments = minScoreForComments;
+	}
 }

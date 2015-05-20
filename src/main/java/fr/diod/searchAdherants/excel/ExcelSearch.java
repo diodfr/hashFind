@@ -42,8 +42,6 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.google.common.base.Optional;
-
 import fr.diod.searchAdherants.excel.style.provider.DefaultStyleProvider;
 import fr.diod.searchAdherants.excel.style.provider.StyleProvider;
 
@@ -77,19 +75,17 @@ public class ExcelSearch {
 					values.add(cellValue);
 				}
 
-				Optional<AdherantScore> adherantOptional = db.searchAdherant(values.toArray(new String[values.size()]));
+				AdherantScore adherant = db.searchAdherant(values.toArray(new String[values.size()]));
 
-				if (adherantOptional.isPresent()) {
-					Cell cell = row.getCell(0);
-					
-					if (cell == null) {
-						cell = row.createCell(0);
-					}
-					LOGGER.debug("({}, {})", cell.getColumnIndex(), cell.getRowIndex());
-					addCellComment(factory, drawing, row, cell, adherantOptional.get());
-					
-					highLightRow(adherantOptional.get().score, row);
+				Cell cell = row.getCell(0);
+
+				if (cell == null) {
+					cell = row.createCell(0);
 				}
+				LOGGER.debug("({}, {})", cell.getColumnIndex(), cell.getRowIndex());
+				addCellComment(factory, drawing, row, cell, adherant);
+
+				highLightRow(adherant.score, row);
 			} catch (NullPointerException ex) {
 				LOGGER.error("NPE", ex);
 			}
@@ -105,6 +101,10 @@ public class ExcelSearch {
 	}
 
 	private void addCellComment(CreationHelper factory, Drawing drawing, Row row, Cell cell, AdherantScore adherantScore) {
+		if (!styleProvider.needsComment(adherantScore.score)) {
+			return;
+		}
+		
 		// When the comment box is visible, have it show in a 1x3 space
 		ClientAnchor anchor = factory.createClientAnchor();
 		anchor.setCol1(cell.getColumnIndex());
@@ -135,7 +135,7 @@ public class ExcelSearch {
 	 */
 	private void highLightRow(int score, Row row) {
 		CellStyle style = styleProvider.get(score);
-		
+
 		highLightRow(style, row);
 	}
 
@@ -223,7 +223,7 @@ public class ExcelSearch {
 	public static InputStream computeResult(File dbFile, int sheetNumberDb, File inputFile, int sheetNumberInput) {
 		return computeResult(dbFile, sheetNumberDb, inputFile, sheetNumberInput, new DefaultStyleProvider());
 	}
-	
+
 	public static InputStream computeResult(File dbFile, int sheetNumberDb, File inputFile, int sheetNumberInput, StyleProvider styleProvider) {
 		Workbook wb;
 		try {
@@ -353,7 +353,7 @@ public class ExcelSearch {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		
+
 	}
 
 }
