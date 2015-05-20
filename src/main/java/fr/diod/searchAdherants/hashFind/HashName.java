@@ -10,7 +10,12 @@ public class HashName {
 	private static final Pattern PATTERN_NOT_LETTER = Pattern.compile("\\W");
 	private static final Pattern PATTERN_E = Pattern.compile("[éèêë]");
 	private static final Pattern PATTERN_I = Pattern.compile("ï");
-	public static String hashName(String name) {
+	/**
+	 * Removes specials caracters of the name.
+	 * @param name
+	 * @return
+	 */
+	public static String cleanName(String name) {
 		String cleanName = name.trim().toLowerCase();
 		
 		cleanName = PATTERN_E.matcher(cleanName).replaceAll("e");

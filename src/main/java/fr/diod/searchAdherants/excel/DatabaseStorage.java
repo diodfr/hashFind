@@ -6,7 +6,6 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
-import java.util.concurrent.ConcurrentNavigableMap;
 
 import org.apache.commons.codec.EncoderException;
 import org.apache.commons.codec.language.bm.BeiderMorseEncoder;
@@ -27,12 +26,13 @@ import fr.diod.searchAdherants.hashFind.HashName;
 public class DatabaseStorage {
 	private static final Logger LOGGER = LoggerFactory.getLogger(DatabaseStorage.class);
 
-	public ConcurrentNavigableMap<String,String> map;
-
 	/**
 	 * Liste des adhérants
 	 */
 	private List<Adherant> adherants = new ArrayList<Adherant>();
+	/**
+	 * correspondance entre les noms et les adhrérants
+	 */
 	private MultiMap nameMap = new MultiValueMap();
 
 	public DatabaseStorage() {
@@ -114,11 +114,11 @@ public class DatabaseStorage {
 	private List<String> createKeys4NameMap(Adherant adherant) {
 		List<String> keys = new ArrayList<String>();
 
-		String name = HashName.hashName(adherant.name);
+		String name = HashName.cleanName(adherant.name);
 		keys.add(name);
 		keys.addAll(encode(name));
 		if (!adherant.maidenName.isEmpty()) {
-			String maidenName = HashName.hashName(adherant.maidenName);
+			String maidenName = HashName.cleanName(adherant.maidenName);
 			keys.add(maidenName);
 			keys.addAll(encode(maidenName));
 		}
@@ -152,18 +152,19 @@ public class DatabaseStorage {
 		int maxScore = 0;
 		Adherant currentMax = null;
 
-		for (String value : values) {
+		for (String value : values) { // Pour chaque valeur
 			LOGGER.debug("Search => {}", value);
 
 			@SuppressWarnings("unchecked")
-			Collection<Adherant> coll = (Collection<Adherant>) nameMap.get(HashName.hashName(value));
+			Collection<Adherant> coll = (Collection<Adherant>) nameMap.get(HashName.cleanName(value)); // y a t'il un nom ?
+			
 			if (coll != null) {
 				for (Adherant currentAdherant : coll) {
 					if (currentAdherant != null) {
 						LOGGER.debug("CurrentAdherant : {}", currentAdherant);
 						int currentScore = (currentAdherant.name.equals(value) ? 50 : 25);
 						LOGGER.debug("Name : {} %", currentScore);
-						if (search(HashName.hashName(currentAdherant.firstName), values)) {
+						if (search(HashName.cleanName(currentAdherant.firstName), values)) {
 							currentScore += 30;
 						} else {
 							currentScore -= 10;
@@ -173,7 +174,7 @@ public class DatabaseStorage {
 						
 						if (currentAdherant.birth.isEmpty()) {
 							currentScore += Math.min(20, currentScore * 0.5);
-						} else if (search(HashName.hashName(currentAdherant.birth), values)) {
+						} else if (search(HashName.cleanName(currentAdherant.birth), values)) {
 							currentScore += 20;
 						}
 						
@@ -202,7 +203,7 @@ public class DatabaseStorage {
 			return false;
 
 		for (String elt : values) {
-			if (value.equals(HashName.hashName(elt))) 
+			if (value.equals(HashName.cleanName(elt))) 
 				return true;
 		}
 
