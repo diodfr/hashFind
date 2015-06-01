@@ -1,21 +1,27 @@
 package fr.diod.searchAdherants.excel.style.provider;
 
-import fr.diod.searchAdherants.excel.ExcelSearch;
-import org.apache.poi.ss.usermodel.CellStyle;
-import org.apache.poi.ss.usermodel.Workbook;
-
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.NavigableMap;
 import java.util.TreeMap;
 
+import org.apache.poi.ss.usermodel.CellStyle;
+import org.apache.poi.ss.usermodel.Workbook;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import fr.diod.searchAdherants.excel.ExcelSearch;
+
 public class LevelStyleProvider implements StyleProvider {
 
+	private static final Logger LOGGER = LoggerFactory.getLogger(LevelStyleProvider.class);
+	
 	private NavigableMap<Integer, Short> colors = new TreeMap<Integer, Short>();
 	private Map<Integer, CellStyle> mapCellStyle = new HashMap<Integer, CellStyle>();
 	private Workbook wb;
 	private int minScoreForComments;
+	private CellStyle defaultStyle;
 	
 	
 	public void initStyle(Workbook wb) {
@@ -28,7 +34,13 @@ public class LevelStyleProvider implements StyleProvider {
 	
 	@Override
 	public CellStyle get(int score) {
+		LOGGER.debug("LevelStyleProvider.get() {}", score);
+		
 		Entry<Integer, Short> colorEntry = colors.floorEntry(score);
+		
+		if (colorEntry == null) {
+			return getDefaultStyle();
+		}
 		
 		if (!mapCellStyle.containsKey(colorEntry.getKey())) {
 			CellStyle style = createStyle(colorEntry.getValue());
@@ -36,6 +48,14 @@ public class LevelStyleProvider implements StyleProvider {
 			mapCellStyle.put(colorEntry.getKey(), style);
 		}
 		return mapCellStyle.get(colorEntry.getKey());
+	}
+
+	private CellStyle getDefaultStyle() {
+		if (defaultStyle == null) {
+			defaultStyle = wb.createCellStyle();
+		}
+		
+		return defaultStyle;
 	}
 
 	CellStyle createStyle(short colorIndex) {

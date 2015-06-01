@@ -109,6 +109,7 @@ public class ExcelTool {
 					continue;
 				}
 
+				LOGGER.trace("row {}", row.getRowNum());
 				Adherant adherant = retrieveAdherant(columnIdx, row);
 
 				if (adherant != null) {
@@ -135,7 +136,7 @@ public class ExcelTool {
 	 * @return
 	 */
 	private static Adherant retrieveAdherant(ColumnIdx columnIdx, Row row) {
-		if (columnIdx.nameIdx > 0) return null;
+		if (columnIdx.nameIdx < 0) return null;
 		
 		Adherant adherant = new Adherant();
 		Cell cellName = row.getCell(columnIdx.nameIdx);
@@ -143,6 +144,7 @@ public class ExcelTool {
 			adherant = null;
 		} else {
 			adherant.name = ExcelTool.getString(cellName);
+			LOGGER.debug("Name : {}", adherant.name);
 			if (columnIdx.nameJFIdx > 0)
 				adherant.maidenName = ExcelTool.getString(row.getCell(columnIdx.nameJFIdx));
 			if (columnIdx.firstNameIdx > 0)
