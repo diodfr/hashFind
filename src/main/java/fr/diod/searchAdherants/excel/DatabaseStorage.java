@@ -27,7 +27,7 @@ public class DatabaseStorage {
 	/**
 	 * Liste des adhérants
 	 */
-	private List<Adherant> adherants = new ArrayList<Adherant>();
+	private List<Adherent> adherants = new ArrayList<Adherent>();
 	/**
 	 * correspondance entre les noms et les adhrérants
 	 */
@@ -68,7 +68,7 @@ public class DatabaseStorage {
 	 * @param email 
 	 */
 	private void populate(File file, int sheetNumber, String name, String maidenName, String firstName, String birthDate, String portable, String telephone, String email) {
-		List<Adherant> adherantsList = ExcelTool.populate(file, sheetNumber, name, maidenName, firstName, birthDate, portable, telephone, email);
+		List<Adherent> adherantsList = ExcelTool.populate(file, sheetNumber, name, maidenName, firstName, birthDate, portable, telephone, email);
 		populate(adherantsList);
 	}
 
@@ -85,7 +85,7 @@ public class DatabaseStorage {
 	 * @param email 
 	 */
 	private void populate(String fileName, int sheetNumber, String name, String maidenName, String firstName, String birthDate, String mobile, String telephone, String email) {
-		List<Adherant> adherantsList = ExcelTool.populate(fileName, sheetNumber, name, maidenName, firstName, birthDate, mobile, telephone, email);
+		List<Adherent> adherantsList = ExcelTool.populate(fileName, sheetNumber, name, maidenName, firstName, birthDate, mobile, telephone, email);
 		populate(adherantsList);
 	}
 
@@ -93,10 +93,10 @@ public class DatabaseStorage {
 	 * Rempli la base avec les adhérants & initialise la map de recherche des noms
 	 * @param adherantsList
 	 */
-	void populate(List<Adherant> adherantsList) {
+	void populate(List<Adherent> adherantsList) {
 		adherants = adherantsList;
 
-		for (Adherant adherant : adherantsList) {
+		for (Adherent adherant : adherantsList) {
 			List<String> keys = createKeys4NameMap(adherant);
 			for (String key : keys) {
 				nameMap.put(key, adherant);
@@ -109,7 +109,7 @@ public class DatabaseStorage {
 	 * @param adherant
 	 * @return
 	 */
-	private List<String> createKeys4NameMap(Adherant adherant) {
+	private List<String> createKeys4NameMap(Adherent adherant) {
 		List<String> keys = new ArrayList<String>();
 
 		String name = HashName.cleanName(adherant.name);
@@ -146,18 +146,18 @@ public class DatabaseStorage {
 	 * @param values liste des valeurs concernant cet adhérant
 	 * @return Adhérant et score max
 	 */
-	public AdherantScore searchAdherant(String values[]) {
+	public AdherentScore searchAdherant(String values[]) {
 		int maxScore = 0;
-		Adherant currentMax = null;
+		Adherent currentMax = null;
 
 		for (String value : values) { // Pour chaque valeur
 			LOGGER.debug("Search => {}", value);
 
 			@SuppressWarnings("unchecked")
-			Collection<Adherant> coll = (Collection<Adherant>) nameMap.get(HashName.cleanName(value)); // y a t'il un nom ?
+			Collection<Adherent> coll = (Collection<Adherent>) nameMap.get(HashName.cleanName(value)); // y a t'il un nom ?
 
 			if (coll != null) {
-				for (Adherant currentAdherant : coll) {
+				for (Adherent currentAdherant : coll) {
 					if (currentAdherant != null) {
 						LOGGER.debug("CurrentAdherant : {}", currentAdherant);
 						int currentScore = (currentAdherant.name.equals(value) ? 50 : 25);
@@ -179,7 +179,7 @@ public class DatabaseStorage {
 						LOGGER.debug("Birth : {} %", currentScore);
 
 						if (currentScore == 100) {
-							return new AdherantScore(currentAdherant, currentScore); // perfect match
+							return new AdherentScore(currentAdherant, currentScore); // perfect match
 						} else if (maxScore < currentScore) {
 							LOGGER.debug("CURRENT MAX {}", currentScore);
 							currentMax = currentAdherant;
@@ -190,7 +190,7 @@ public class DatabaseStorage {
 			}
 		}
 
-		return new AdherantScore(currentMax, maxScore);
+		return new AdherentScore(currentMax, maxScore);
 	}
 
 	private boolean search(String value, String[] values) {
@@ -208,13 +208,13 @@ public class DatabaseStorage {
 
 	private void printAdherants() {
 		System.out.println("====================================================================================");
-		for (Adherant adherant : adherants) {
+		for (Adherent adherant : adherants) {
 			System.out.println(adherant.toString());
 		}
 		System.out.println("====================================================================================");
 	}
 
-	public List<Adherant> getAdherants() {
+	public List<Adherent> getAdherants() {
 		return adherants;
 	}
 

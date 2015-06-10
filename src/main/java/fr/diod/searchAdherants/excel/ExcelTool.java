@@ -71,7 +71,7 @@ public class ExcelTool {
 		} else return false;
 	}
 
-	public static List<Adherant> populate(String fileName, int sheetNumber, String nom, String nom_jeune_fille, String prenom, String date, String portable, String telephone, String email ) {
+	public static List<Adherent> populate(String fileName, int sheetNumber, String nom, String nom_jeune_fille, String prenom, String date, String portable, String telephone, String email ) {
 		return populate(new File(fileName), sheetNumber, nom, nom_jeune_fille, prenom, date, portable, telephone, email);
 	}
 
@@ -88,8 +88,8 @@ public class ExcelTool {
 	 * @param email label entête colonne email
 	 * @return une liste d'adherant
 	 */
-	public static List<Adherant> populate(File file, int sheetNumber, String nom, String nom_jeune_fille, String prenom, String date, String portable, String telephone, String email ) {	
-		List<Adherant> adherants = new ArrayList<Adherant>();
+	public static List<Adherent> populate(File file, int sheetNumber, String nom, String nom_jeune_fille, String prenom, String date, String portable, String telephone, String email ) {	
+		List<Adherent> adherants = new ArrayList<Adherent>();
 
 		try {
 			Workbook wb = WorkbookFactory.create(file);
@@ -110,7 +110,7 @@ public class ExcelTool {
 				}
 
 				LOGGER.trace("row {}", row.getRowNum());
-				Adherant adherant = retrieveAdherant(columnIdx, row);
+				Adherent adherant = retrieveAdherant(columnIdx, row);
 
 				if (adherant != null) {
 					LOGGER.debug("{}",adherant.toString());
@@ -135,10 +135,10 @@ public class ExcelTool {
 	 * @param row
 	 * @return
 	 */
-	private static Adherant retrieveAdherant(ColumnIdx columnIdx, Row row) {
+	private static Adherent retrieveAdherant(ColumnIdx columnIdx, Row row) {
 		if (columnIdx.nameIdx < 0) return null;
 		
-		Adherant adherant = new Adherant();
+		Adherent adherant = new Adherent();
 		Cell cellName = row.getCell(columnIdx.nameIdx);
 		if (cellName == null || cellName.getCellType() == Cell.CELL_TYPE_BLANK) {
 			adherant = null;

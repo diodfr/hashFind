@@ -75,7 +75,7 @@ public class ExcelSearch {
 					values.add(cellValue);
 				}
 
-				AdherantScore adherant = db.searchAdherant(values.toArray(new String[values.size()]));
+				AdherentScore adherant = db.searchAdherant(values.toArray(new String[values.size()]));
 
 				Cell cell = row.getCell(0);
 
@@ -100,7 +100,7 @@ public class ExcelSearch {
 		return style;
 	}
 
-	private void addCellComment(CreationHelper factory, Drawing drawing, Row row, Cell cell, AdherantScore adherantScore) {
+	private void addCellComment(CreationHelper factory, Drawing drawing, Row row, Cell cell, AdherentScore adherantScore) {
 		if (!styleProvider.needsComment(adherantScore.score)) {
 			return;
 		}

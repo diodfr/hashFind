@@ -21,16 +21,16 @@ public class DatabaseStorageTest {
 	private static final String NAME = "Broca";
 	private static final String BIRTH_DATE = "05/02/1976";
 	private static final String FIRST_NAME = "Aurore";
-	private Adherant adherant;
+	private Adherent adherant;
 	private DatabaseStorage dataStorage;
 
 	@Before
 	public void initTest() {
 		dataStorage = new DatabaseStorage();
 
-		adherant = new Adherant().setName(NAME).setMaidenName(MAIDEN_NAME).setFirstName(FIRST_NAME).setBirthDate(BIRTH_DATE);
+		adherant = new Adherent().setName(NAME).setMaidenName(MAIDEN_NAME).setFirstName(FIRST_NAME).setBirthDate(BIRTH_DATE);
 
-		List<Adherant> adherantsList = new ArrayList<Adherant>();
+		List<Adherent> adherantsList = new ArrayList<Adherent>();
 		adherantsList.add(adherant);
 
 		dataStorage.populate(adherantsList);
@@ -38,7 +38,7 @@ public class DatabaseStorageTest {
 
 	@Test
 	public void getAdherantsTest() {
-		List<Adherant> adherants = dataStorage.getAdherants();
+		List<Adherent> adherants = dataStorage.getAdherants();
 		assertThat(adherants, hasSize(1));
 		assertThat(adherants, hasItem(adherant));
 	}
@@ -97,9 +97,9 @@ public class DatabaseStorageTest {
 	public void searchAdherant_DatabaseWithNull_BirthDate() {
 		DatabaseStorage dataStorageWithNull = new DatabaseStorage();
 
-		Adherant adherantWithNull = new Adherant().setName(NAME).setMaidenName(MAIDEN_NAME).setFirstName(FIRST_NAME);
+		Adherent adherantWithNull = new Adherent().setName(NAME).setMaidenName(MAIDEN_NAME).setFirstName(FIRST_NAME);
 
-		List<Adherant> adherantsList = new ArrayList<Adherant>();
+		List<Adherent> adherantsList = new ArrayList<Adherent>();
 		adherantsList.add(adherantWithNull);
 
 		dataStorageWithNull.populate(adherantsList);
@@ -111,9 +111,9 @@ public class DatabaseStorageTest {
 	public void searchAdherant_DatabaseWithNull_FirstName() {
 		DatabaseStorage dataStorageWithNull = new DatabaseStorage();
 
-		Adherant adherantWithNull = new Adherant().setName(NAME).setMaidenName(MAIDEN_NAME).setBirthDate(BIRTH_DATE);
+		Adherent adherantWithNull = new Adherent().setName(NAME).setMaidenName(MAIDEN_NAME).setBirthDate(BIRTH_DATE);
 
-		List<Adherant> adherantsList = new ArrayList<Adherant>();
+		List<Adherent> adherantsList = new ArrayList<Adherent>();
 		adherantsList.add(adherantWithNull);
 
 		dataStorageWithNull.populate(adherantsList);
@@ -125,9 +125,9 @@ public class DatabaseStorageTest {
 	public void searchAdherant_DatabaseWithNull_MaidenName() {
 		DatabaseStorage dataStorageWithNull = new DatabaseStorage();
 
-		Adherant adherantWithNull = new Adherant().setName(NAME).setFirstName(FIRST_NAME).setBirthDate(BIRTH_DATE);
+		Adherent adherantWithNull = new Adherent().setName(NAME).setFirstName(FIRST_NAME).setBirthDate(BIRTH_DATE);
 
-		List<Adherant> adherantsList = new ArrayList<Adherant>();
+		List<Adherent> adherantsList = new ArrayList<Adherent>();
 		adherantsList.add(adherantWithNull);
 
 		dataStorageWithNull.populate(adherantsList);
@@ -139,9 +139,9 @@ public class DatabaseStorageTest {
 	public void searchAdherant_DatabaseWithNull_Name() {
 		DatabaseStorage dataStorageWithNull = new DatabaseStorage();
 
-		Adherant adherantWithNull = new Adherant().setMaidenName(NAME).setFirstName(FIRST_NAME).setBirthDate(BIRTH_DATE);
+		Adherent adherantWithNull = new Adherent().setMaidenName(NAME).setFirstName(FIRST_NAME).setBirthDate(BIRTH_DATE);
 
-		List<Adherant> adherantsList = new ArrayList<Adherant>();
+		List<Adherent> adherantsList = new ArrayList<Adherent>();
 		adherantsList.add(adherantWithNull);
 
 		dataStorageWithNull.populate(adherantsList);

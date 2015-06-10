@@ -5,7 +5,7 @@ import javax.persistence.Entity;
 import com.google.common.base.Objects;
 
 @Entity
-public class Adherant {
+public class Adherent {
 	String name = "";
 	String maidenName = "";
 	String firstName = "";
@@ -27,7 +27,7 @@ public class Adherant {
 				.toString();
 	}
 
-	public Adherant setName(String name) {
+	public Adherent setName(String name) {
 		if (name == null) {
 			this.name = "";
 		} else {
@@ -36,7 +36,7 @@ public class Adherant {
 		return this;
 	}
 
-	public Adherant setMaidenName(String maidenName) {
+	public Adherent setMaidenName(String maidenName) {
 		if (maidenName == null) {
 			this.maidenName = "";
 		} else {
@@ -45,7 +45,7 @@ public class Adherant {
 		return this;
 	}
 
-	public Adherant setFirstName(String firstName) {
+	public Adherent setFirstName(String firstName) {
 		if (firstName == null) {
 			this.firstName = "";
 		} else {
@@ -54,7 +54,7 @@ public class Adherant {
 		return this;
 	}
 
-	public Adherant setBirthDate(String birthDate) {
+	public Adherent setBirthDate(String birthDate) {
 		if (birthDate == null) {
 			this.birth = "";
 		} else {

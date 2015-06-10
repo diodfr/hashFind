@@ -3,11 +3,11 @@ package fr.diod.searchAdherants.excel;
 import com.google.common.base.Objects;
 import com.google.common.base.Objects.ToStringHelper;
 
-public class AdherantScore {
-	public Adherant adherant;
+public class AdherentScore {
+	public Adherent adherant;
 	public int score;
 
-	public AdherantScore(Adherant adherant, int score) {
+	public AdherentScore(Adherent adherant, int score) {
 		this.adherant = adherant;
 		this.score = score;
 	}
