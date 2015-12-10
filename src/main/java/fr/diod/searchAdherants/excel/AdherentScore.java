@@ -20,12 +20,11 @@ public class AdherentScore {
 				.addValue(adherant.firstName)
 				.addValue(adherant.birth);
 
-		if (score >= 75) {
-			toString.addValue(adherant.portable)
-			.addValue(adherant.telephone)
-			.addValue(adherant.email);
-		}
-		
+
+		toString.addValue(adherant.portable)
+		.addValue(adherant.telephone)
+		.addValue(adherant.email);
+
 		return toString.toString();
 	}
 }
